@@ -1,1 +1,1 @@
-var app = angular.module('ContentBorrowApp',[]);
+var app = angular.module('ContentBorrowApp',['ui.bootstrap']);
