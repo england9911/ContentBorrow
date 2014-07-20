@@ -2,49 +2,56 @@
 <html>
 <head>
 	<title>Content Borrow</title>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
-	<script type="text/javascript" src="js/promise-tracker.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>	    
+	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
 
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
 
 	<script type="text/javascript" src="js/contentborrow/app.js"></script>
 	<script type="text/javascript" src="js/contentborrow/controllers/mainController.js"></script>
 </head>
 <body>
-    <div class='banner'>
-        <div class='container'>
-            <h1>Content Borrower</h1>
-        </div>
-    </div>
+    <div class="jumbotron">
+	  <h1>Content Borrower <small>Use real content in place of lorem ipsum</small></h1>
+	  <p>If you're fed up of seeing the same gibberish text, and/or clients have said 'what the hell does that mean?', you can borrow placeholder content from a given URL or choose from several well-known sites. View here or download as a block of HTML.</p>
+	</div>
+
 	<div class="container main-frame" ng-app="ContentBorrowApp" ng-controller="mainController" ng-init="init()">
 
-		<div id="messages" class="alert alert-success" ng-show="messages" ng-bind="messages">
-			    <a href="#" class="close" data-dismiss="messages">&times;</a>
-		</div>
+		<div id="messages" class="alert alert-success" ng-show="messages" ng-bind="messages" ng-click="closeAlert(messages)"></div>
 
 		<form name="urlForm" novalidate role="form">
 		    <div class="form-group">
 			    <label for="url">Page URL</label>
-			    <span class="label label-danger" ng-show="submitted && urlForm.$error.url">Invalid URL format!</span>
+			    <span class="label label-danger" ng-show="submitted && urlForm.$error.url">Invalid URL format</span>
 			    <input type="url" name="url" ng-model="url" class="form-control" placeholder="e.g. http://www.google.co.uk" />
 		  	</div>
-		  	<button ng-disabled="progress.active()" ng-click="submit(urlForm)" class="btn btn-default">Submit</button>
+		  	<button ng-click="submit(urlForm)" class="btn btn-default btn-primary btn-lg"><span class="glyphicon glyphicon-arrow-down"></span> Grab it</button>
 		</form>
 
-		<div class="results">
-			<div class="img"><img src="{{ pageData.image }}" class="img-responsive"></div>
-			<div class="name">{{ pageData.name }}</div>
-			<div class="datepub">{{ pageData.datePublished }}</div>
-			<div class="keywords">
-				<ul>
-					<li ng-repeat="keyword in keywords track by $index">{{ keyword }}</li>
-				</ul>
+		<div class="results animate-show" ng-if="dataPresent">
+			<a href="#" class="btn btn-default btn-success btn-lg" ng-click="viewAsHtml()"><span class="glyphicon glyphicon-share"></span> View as HTML</a>
+
+			<div class="row">
+				<div class="name"><h1>{{ pageData.name }}</h1></div>
+				<div class="datepub">{{ pageData.datePublished | date : 'medium' }}</div>
+				<div class="desc">{{ pageData.description }}</div>
 			</div>
-		    <div class="desc">{{ pageData.description }}</div>
-		    <div class="text">{{ pageData.text }}</div>
+
+			<div class="row">
+				<div class="col-md-3">
+					<div class="keywords">
+						<h2>Keywords</h2>
+						<ul class="list-group">
+							<li ng-repeat="keyword in keywords track by $index" class="list-group-item">{{ keyword }}</li>
+						</ul>
+					</div>
+			    </div>
+			    <div class="text col-md-7"><p>{{ pageData.text }}</p></div>
+			    <div class="img col-md-2"><img ng-src="{{ pageData.image }}" class="img-responsive"></div>
+		    </div>
 		</div>
-
-
 
 	</div>
 </body>
