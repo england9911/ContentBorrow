@@ -3,12 +3,12 @@
 <head>
 	<title>Content Borrow</title>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+	<script type="text/javascript" src="js/promise-tracker.js"></script>
+
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 
 	<script type="text/javascript" src="js/contentborrow/app.js"></script>
 	<script type="text/javascript" src="js/contentborrow/controllers/mainController.js"></script>
-	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <div class='banner'>
@@ -17,12 +17,35 @@
         </div>
     </div>
 	<div class="container main-frame" ng-app="ContentBorrowApp" ng-controller="mainController" ng-init="init()">
-		<div class="search-box row-fluid form-inline"></div>
-        <div class="results-top"></div>
-        <div class="results-container">
-            <ul class="episode-list"></ul>
-        </div>
-        <div class="results-bottom"></div>
+
+		<div id="messages" class="alert alert-success" ng-show="messages" ng-bind="messages">
+			    <a href="#" class="close" data-dismiss="messages">&times;</a>
+		</div>
+
+		<form name="urlForm" novalidate role="form">
+		    <div class="form-group">
+			    <label for="url">Page URL</label>
+			    <span class="label label-danger" ng-show="submitted && urlForm.$error.url">Invalid URL format!</span>
+			    <input type="url" name="url" ng-model="url" class="form-control" placeholder="e.g. http://www.google.co.uk" />
+		  	</div>
+		  	<button ng-disabled="progress.active()" ng-click="submit(urlForm)" class="btn btn-default">Submit</button>
+		</form>
+
+		<div class="results">
+			<div class="img"><img src="{{ pageData.image }}" class="img-responsive"></div>
+			<div class="name">{{ pageData.name }}</div>
+			<div class="datepub">{{ pageData.datePublished }}</div>
+			<div class="keywords">
+				<ul>
+					<li ng-repeat="keyword in keywords track by $index">{{ keyword }}</li>
+				</ul>
+			</div>
+		    <div class="desc">{{ pageData.description }}</div>
+		    <div class="text">{{ pageData.text }}</div>
+		</div>
+
+
+
 	</div>
 </body>
 </html> 
