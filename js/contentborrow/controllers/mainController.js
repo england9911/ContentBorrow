@@ -19,9 +19,10 @@ app.controller("mainController", function($scope, $http) {
 		*/
 		
         // Two-way binding makes messages appear in alert box
-        $scope.messages = 'Enter a custom URL below to scrape content';
+        //$scope.messages = 'Enter a custom URL below to scrape content';
 
         $scope.dataPresent = false;
+        $scope.htmlContent = false;
     };
 
 
@@ -30,6 +31,7 @@ app.controller("mainController", function($scope, $http) {
 		// Trigger validation flag.
 		$scope.submitted = true;
 		$scope.dataPresent = false;
+		$scope.htmlContent = false;
 
 		// If form is invalid, return and let AngularJS show validation errors.
 		if (form.$invalid) {
@@ -49,13 +51,13 @@ app.controller("mainController", function($scope, $http) {
 			// Perform JSONP request.
 	      	$http.jsonp('http://api.pagemunch.com/1/summary.jsonp', config)
 		        .success(function(data, config) {
-		          	console.log('success!');
-		          	console.log(data);
+		          	//console.log('success!');
+		          	//console.log(data);
 		            $scope.pageData = data;
-		            $scope.keywords = data.keywords;
 		            $scope.messages = 'Success';
 		            $scope.submitted = false;
 		          	$scope.dataPresent = true;
+		          	$scope.usedUrl = $scope.url;
 		        })
 		        .error(function(data, config) {
 		          $scope.messages = 'There was a network error. Try again later.';
@@ -63,8 +65,14 @@ app.controller("mainController", function($scope, $http) {
 	    }
     };
 
-    $scope.viewAsHtml = function() {
-    	console.log('VIEW AS HTML..');
+    $scope.viewAsHtml = function(pageData) {
+    	
+    	$scope.htmlContent = '<h1>' + pageData.name + '</h1>' 
+    								+ '<i>' + pageData.datePublished + '</i>' 
+    								+ '<img src="' + pageData.image + '" style="float:left; padding:0 20px 20px 0;" class="img-responsive">'
+    								+ '<h2>' + pageData.description + '</h2>' 
+    								+ '<p>' + pageData.text + '</p>';
+
     };
 
     $scope.closeAlert = function(alert) {

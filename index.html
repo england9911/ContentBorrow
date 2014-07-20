@@ -17,10 +17,10 @@
    		<div class="container">
    			<div class="init-content" ng-hide="dataPresent">
 	  			<h1>Content Borrow-tron <small>Generate real placeholder content</small></h1>
-	  			<p>If you're fed up of seeing the same gibberish text, and/or clients have said 'what the hell does that mean?', you can borrow placeholder content from a given URL or choose from several well-known sites. Can also be downloaded as a block of HTML for pasting directly into rich-text editors.</p>
+	  			<p>If you're fed up of seeing the same gibberish placeholder text, and/or clients have said 'what the hell does that mean?', you can borrow placeholder content from a given URL or choose from several well-known sites. Can also be downloaded as a block of HTML for pasting directly into rich-text editors. Bosh.</p>
 	  		</div>
 	  		<div class="data-content" ng-show="dataPresent">
-	  			<p><strong><a href="/">Content Borrow-tron</a></strong></p>
+	  			<p><strong>Content Borrow-tron</strong></p>
 	  		</div>
 		</div>
 	</div>
@@ -29,11 +29,15 @@
 
 		<div id="messages" class="alert alert-success" ng-show="messages" ng-bind="messages" ng-click="closeAlert(messages)"></div>
 
-		<div class="results animate-show" ng-if="dataPresent">
+		<div class="html-content" ng-if="htmlContent">
+	    	<textarea>{{htmlContent}}</textarea>
+		</div>
+
+		<div class="results animate-show" ng-if="dataPresent && !htmlContent">
 
 			<div class="row">
 				<div class="col-xs-12">
-					<button class="btn btn-default btn-success btn-lg" ng-click="viewAsHtml()"><span class="glyphicon glyphicon-share"></span> View as HTML</button> 
+					<button class="btn btn-default btn-success btn-lg" ng-click="viewAsHtml(pageData)"><span class="glyphicon glyphicon-share"></span> View as HTML</button> 
 					<a href="/" class="btn btn-default btn-primary btn-lg"><span class="glyphicon glyphicon-refresh"></span> Again</a>
 				</div>
 			</div>
@@ -52,7 +56,7 @@
 					<div class="keywords">
 						<h2>Keywords</h2>
 						<ul class="list-group">
-							<li ng-repeat="keyword in keywords track by $index" class="list-group-item">{{ keyword }}</li>
+							<li ng-repeat="keyword in pageData.keywords track by $index" class="list-group-item">{{ keyword }}</li>
 						</ul>
 					</div>
 			    </div>
