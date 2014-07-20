@@ -66,13 +66,14 @@ app.controller("mainController", function($scope, $http) {
     };
 
     $scope.viewAsHtml = function(pageData) {
+
+    	var textHtml = pageData.text.replace(/(?:\r\n|\r|\n)/g, '<br>');
     	
     	$scope.htmlContent = '<h1>' + pageData.name + '</h1>' 
     								+ '<i>' + pageData.datePublished + '</i>' 
     								+ '<img src="' + pageData.image + '" style="float:left; padding:0 20px 20px 0;" class="img-responsive">'
     								+ '<h2>' + pageData.description + '</h2>' 
-    								+ '<p>' + pageData.text + '</p>';
-
+    								+ '<p>' + textHtml + '</p>';
     };
 
     $scope.closeAlert = function(alert) {
