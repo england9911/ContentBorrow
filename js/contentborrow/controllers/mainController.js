@@ -1,7 +1,7 @@
-app.controller("mainController", function($scope, $http){
+app.controller("mainController", function($scope, $http) {
 
     $scope.apiKey = "c387d9b67d32e57d5cf29815405e39d4";
-    $scope.initUrl = 'http://www.google.com';
+    //$scope.initUrl = 'http://www.google.com';
 
     // Latest news stories from: BBC, Daily Mail, Guardian etc
     // Latest article from: ViceUK, something else
@@ -21,6 +21,7 @@ app.controller("mainController", function($scope, $http){
         // Two-way binding makes messages appear in alert box
         $scope.messages = 'Enter a custom URL below to scrape content';
 
+        $scope.dataPresent = false;
     };
 
 
@@ -28,6 +29,7 @@ app.controller("mainController", function($scope, $http){
     $scope.submit = function(form) {
 		// Trigger validation flag.
 		$scope.submitted = true;
+		$scope.dataPresent = false;
 
 		// If form is invalid, return and let AngularJS show validation errors.
 		if (form.$invalid) {
@@ -46,21 +48,28 @@ app.controller("mainController", function($scope, $http){
 
 			// Perform JSONP request.
 	      	$http.jsonp('http://api.pagemunch.com/1/summary.jsonp', config)
-		        .success(function(data, status, headers, config) {
+		        .success(function(data, config) {
 		          	console.log('success!');
 		          	console.log(data);
 		            $scope.pageData = data;
 		            $scope.keywords = data.keywords;
 		            $scope.messages = 'Success';
 		            $scope.submitted = false;
-		          
+		          	$scope.dataPresent = true;
 		        })
-		        .error(function(data, status, headers, config) {
+		        .error(function(data, config) {
 		          $scope.messages = 'There was a network error. Try again later.';
-		          console.log(data);
 		        });
 	    }
     };
+
+    $scope.viewAsHtml = function() {
+    	console.log('VIEW AS HTML..');
+    };
+
+    $scope.closeAlert = function(alert) {
+    	$scope.messages = '';
+  	};
 
 });
 
